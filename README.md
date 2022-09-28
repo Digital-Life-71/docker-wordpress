@@ -34,33 +34,33 @@ $ sudo dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
     c) Установить по команде:
 ```
-            $ sudo dnf install ./docker-desktop-<version>-<arch>.rpm
+$ sudo dnf install ./docker-desktop-<version>-<arch>.rpm
 ```
-    Docker Desktop установлен.
+Docker Desktop установлен.
 
-    Далее возникает ошибка при попытке залогиниться в приложении.
+Далее возникает ошибка при попытке залогиниться в приложении.
 
-    Решение:
+Решение:
 ```
-        $ sudo apt-get install pass
+$ sudo apt-get install pass
 ```
-        если не сработает, то
+если не сработает, то
 ```
-        $ sudo yum install pass
+$ sudo yum install pass
 ```
-        далее
+далее
 ```
-        $ wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.0/docker-credential-pass-v0.6.0-amd64.tar.gz && tar -xf docker-credential-pass-v0.6.0-amd64.tar.gz && chmod +x docker-credential-pass && sudo mv docker-credential-pass /usr/local/bin/
-```
-```
-        $ gpg2 --gen-key
+$ wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.0/docker-credential-pass-v0.6.0-amd64.tar.gz && tar -xf docker-credential-pass-v0.6.0-amd64.tar.gz && chmod +x docker-credential-pass && sudo mv docker-credential-pass /usr/local/bin/
 ```
 ```
-        $ pass init "<Your Name>"
+$ gpg2 --gen-key
 ```
 ```
-        $ sed -i '0,/{/s/{/{\n\t"credsStore": "pass",/' ~/.docker/config.json
+$ pass init "<Your Name>"
 ```
 ```
-        $ docker login
+$ sed -i '0,/{/s/{/{\n\t"credsStore": "pass",/' ~/.docker/config.json
+```
+```
+$ docker login
 ```
