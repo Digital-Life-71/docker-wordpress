@@ -1,4 +1,7 @@
 /index.php
+/languages/
+/upgrade/
+/uploads/
 /plugins/index.php
 /plugins/hello.php
 /plugins/akismet/

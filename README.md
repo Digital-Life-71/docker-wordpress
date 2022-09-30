@@ -1,66 +1,51 @@
-#Docker:
+# Docker Desktop Ubuntu :
 
-1. Установка Docker Engine:
-```
-$ sudo dnf remove docker \
-          docker-client \
-          docker-client-latest \
-          docker-common \
-          docker-latest \
-          docker-latest-logrotate \
-          docker-logrotate \
-          docker-selinux \
-          docker-engine-selinux \
-          docker-engine
-```
-```
-$ sudo dnf -y install dnf-plugins-core
-```
-```
-$ sudo dnf config-manager \
-                --add-repo \
-                https://download.docker.com/linux/fedora/docker-ce.repo
-```
-```
-$ sudo dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-```
-2. Установка Docker Desktop
+[Скачать Docker Desktop для Ubuntu](https://desktop.docker.com/linux/main/amd64/docker-desktop-4.12.0-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64)
 
-    а) Перед установкой необходимо установить Docker Engine (инструкция выше)
+### Удаляем старые версии
 
-    b) Скачать свежий rpm-пакет:
+```
+sudo apt-get remove docker docker-engine docker.io containerd runc
+```
 
-    https://desktop.docker.com/linux/main/amd64/docker-desktop-4.11.0-x86_64.rpm?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64
+### Настрраиваем репозиторий
 
-    c) Установить по команде:
 ```
-$ sudo dnf install ./docker-desktop-<version>-<arch>.rpm
+sudo apt-get update
 ```
-Docker Desktop установлен.
 
-Далее возникает ошибка при попытке залогиниться в приложении.
+```
+sudo apt-get install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+```
 
-Решение:
+### Добавьте официальный GPG-ключ Docker:
 ```
-$ sudo apt-get install pass
+sudo mkdir -p /etc/apt/keyrings
 ```
-если не сработает, то
+
 ```
-$ sudo yum install pass
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 ```
-далее
+
+### Используйте следующую команду для настройки репозитория
+
 ```
-$ wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.0/docker-credential-pass-v0.6.0-amd64.tar.gz && tar -xf docker-credential-pass-v0.6.0-amd64.tar.gz && chmod +x docker-credential-pass && sudo mv docker-credential-pass /usr/local/bin/
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
+
+## Установка Docker Engine
 ```
-$ gpg2 --gen-key
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
+
+###  Проверяем роботу, запускаем hello-world 
 ```
-$ pass init "<Your Name>"
-```
-```
-$ sed -i '0,/{/s/{/{\n\t"credsStore": "pass",/' ~/.docker/config.json
-```
-```
-$ docker login
+sudo docker run hello-world
 ```
