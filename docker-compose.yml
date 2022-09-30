@@ -1,31 +1,62 @@
 version: '3'
 
+volumes:
+  wp-data:
+
+networks:
+  wp-back:
+
 services:
+  
+  # MySQL database
+  mysql:
+    image: mysql:5.7
+    container_name: MySQL
+    restart: always
+    volumes:
+      - wp-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp-user
+      MYSQL_PASSWORD: wp-pass
+      MYSQL_RANDOM_ROOT_PASSWORD: rootPassword  
+    ports:
+      - 8889:3306
+    networks:
+      - wp-back
+
+  # PhpMyAdmin
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: PhpMyAdmin
+    environment:
+      PMA_HOST: mysql
+      MYSQL_USER: wp-user
+      MYSQL_PASSWORD: wp-pass
+      MYSQL_ROOT_PASSWORD: rootPassword
+    ports:
+      - 3001:80
+    networks:
+      - wp-back   
+
   #WordPress
-  dl-wordpress:
+  wordpress:
+    depends_on:
+      - mysql
     image: wordpress:latest
-    container_name: dl-wp
+    container_name: WordPress
     restart: always
     working_dir: /var/www/html/
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./:/var/www/html/wp-content/
     environment:
-      WORDPRESS_DB_HOST: DB
-      WORDPRESS_DB_USER: USER
-      WORDPRESS_DB_NAME: NAME
-      WORDPRESS_DB_PASSWORD: PASS
-
-  # MySQL database
-  dl-mysql:
-    image: mysql:5.7
-    container_name: dl-mysql
-    restart: always
-    volumes:
-      - /var/lib/mysql
-    environment:
-      MYSQL_DATABASE: DB
-      MYSQL_USER: USER
-      MYSQL_PASSWORD: PASS
-      MYSQL_RANDOM_ROOT_PASSWORD: dl
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp-user
+      WORDPRESS_DB_PASSWORD: wp-pass
+    networks:
+      - wp-back
