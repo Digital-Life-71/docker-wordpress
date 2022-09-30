@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  #WordPress
+  dl-wordpress:
+    image: wordpress:latest
+    container_name: dl-wp
+    restart: always
+    working_dir: /var/www/html/
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www/html/wp-content/
+    environment:
+      WORDPRESS_DB_HOST: DB
+      WORDPRESS_DB_USER: USER
+      WORDPRESS_DB_NAME: NAME
+      WORDPRESS_DB_PASSWORD: PASS
+
+  # MySQL database
+  dl-mysql:
+    image: mysql:5.7
+    container_name: dl-mysql
+    restart: always
+    volumes:
+      - /var/lib/mysql
+    environment:
+      MYSQL_DATABASE: DB
+      MYSQL_USER: USER
+      MYSQL_PASSWORD: PASS
+      MYSQL_RANDOM_ROOT_PASSWORD: dl
