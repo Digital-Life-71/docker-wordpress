@@ -1,4 +1,4 @@
-# Docker Desktop Ubuntu :
+# Docker Desktop Ubuntu:
 
 [Скачать Docker Desktop для Ubuntu](https://desktop.docker.com/linux/main/amd64/docker-desktop-4.12.0-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64)
 
@@ -19,7 +19,7 @@ sudo apt-get install \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
+    lsb-release -y
 ```
 
 ### Добавьте официальный GPG-ключ Docker:
@@ -42,7 +42,7 @@ echo \
 ## Установка Docker Engine
 ```
 sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 ```
 
 ###  Проверяем роботу, запускаем hello-world 
